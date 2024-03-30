@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(calmerBeats());
 
-class MyApp extends StatelessWidget {
+class calmerBeats extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
