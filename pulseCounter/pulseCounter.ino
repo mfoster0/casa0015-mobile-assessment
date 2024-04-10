@@ -23,6 +23,40 @@
   but it will also run at 3.3V.
 */
 
+// next section from second example
+
+/*
+
+Adapted from https://randomnerdtutorials.com/esp32-bluetooth-low-energy-ble-arduino-ide/
+
+*/
+
+/*
+    Based on Neil Kolban example for IDF: https://github.com/nkolban/esp32-snippets/blob/master/cpp_utils/tests/BLE%20Tests/SampleServer.cpp
+    Ported to Arduino ESP32 by Evandro Copercini
+    updates by chegewara
+*/
+
+
+// See the following for generating UUIDs:
+// https://www.uuidgenerator.net/
+
+#define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
+#define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+
+#include <BLEDevice.h>
+#include <BLEServer.h>
+#include <BLEUtils.h>
+#include <BLEService.h>
+#include <BLECharacteristic.h>
+#include <BLEAdvertising.h>
+
+BLEServer *pServer = nullptr;
+BLEService *pService = nullptr;
+BLECharacteristic *pCharacteristic = nullptr;
+int counter = 0;
+
+
 #include <Wire.h>
 #include "MAX30105.h"
 
@@ -34,6 +68,8 @@ const byte RATE_SIZE = 4; //Increase this for more averaging. 4 is good.
 byte rates[RATE_SIZE]; //Array of heart rates
 byte rateSpot = 0;
 long lastBeat = 0; //Time at which the last beat occurred
+
+long lastBLE = 0;
 
 float beatsPerMinute;
 int beatAvg;
@@ -49,7 +85,7 @@ void setup()
   Serial.begin(115200);
   Serial.println("Initializing...");
 
-  // Initialize sensor
+  // Initialize heart rate sensor
   if (!particleSensor.begin(Wire, I2C_SPEED_FAST)) //Use default I2C port, 400kHz speed
   {
     Serial.println("MAX30102 was not found. Please check wiring/power. ");
@@ -60,6 +96,30 @@ void setup()
   particleSensor.setup(); //Configure sensor with default settings
   particleSensor.setPulseAmplitudeRed(0x0A); //Turn Red LED to low to indicate sensor is running
   particleSensor.setPulseAmplitudeGreen(0); //Turn off Green LED
+
+  //code for BLE setup
+  Serial.begin(115200);
+  Serial.println("Starting BLE work!");
+
+  BLEDevice::init("BeatsMon");
+  pServer = BLEDevice::createServer();
+  pService = pServer->createService(SERVICE_UUID);
+  pCharacteristic = pService->createCharacteristic(
+                                         CHARACTERISTIC_UUID,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );
+
+  pCharacteristic->setValue("52b");
+  pService->start();
+  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+  pAdvertising->addServiceUUID(SERVICE_UUID);
+  pAdvertising->setScanResponse(true);
+  pAdvertising->setMinPreferred(0x06);  
+  pAdvertising->setMinPreferred(0x12);
+  BLEDevice::startAdvertising();
+  Serial.println("Characteristic defined! Now you can read it in your phone!");
+
 }
 
 void loop()
@@ -115,6 +175,16 @@ void loop()
         missedBPM = 0;
       }
     }
+
+  }
+
+  //broadcast new values over BLE every nMillis
+  long ms = millis();
+  if (ms - lastBLE > 2000)
+  {
+    lastBLE = ms;
+    pCharacteristic->setValue(std::to_string(beatAvg));
+    counter++;
   }
 
   Serial.print("IR=");
