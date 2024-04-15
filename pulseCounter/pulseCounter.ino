@@ -44,6 +44,11 @@ Adapted from https://randomnerdtutorials.com/esp32-bluetooth-low-energy-ble-ardu
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"
 
+#include <algorithm>
+#include <iostream>
+#include <vector>
+#include <cmath> 
+
 #include <BLEDevice.h>
 #include <BLEServer.h>
 #include <BLEUtils.h>
@@ -64,13 +69,20 @@ int counter = 0;
 
 MAX30105 particleSensor;
 
-const byte RATE_SIZE = 4; //Increase this for more averaging. 4 is good.
+const byte HRV_SIZE = 20; //For averaging HRV
+long hrvs[HRV_SIZE];
+byte hrvSpot = 0;
+double hrv = 0;
+
+const byte RATE_SIZE = 6; //For averaging BPM
 byte rates[RATE_SIZE]; //Array of heart rates
 byte rateSpot = 0;
 long lastBeat = 0; //Time at which the last beat occurred
+byte intervalSpot = 0;
+bool intervalsReady = false;
+int intervalsCount = 0;
 
 long lastBLE = 0;
-
 float beatsPerMinute;
 int beatAvg;
 
@@ -79,6 +91,7 @@ long stableDelta = 0;
 int missedCount = 0;
 int missedBPM = 0;
 const int maxMisses = 20;
+
 
 void setup()
 {
@@ -107,7 +120,7 @@ void setup()
   pCharacteristic = pService->createCharacteristic(
                                          CHARACTERISTIC_UUID,
                                          BLECharacteristic::PROPERTY_READ |
-                                         BLECharacteristic::PROPERTY_WRITE
+                                         BLECharacteristic::PROPERTY_NOTIFY
                                        );
 
   pCharacteristic->setValue("52b");
@@ -120,6 +133,10 @@ void setup()
   BLEDevice::startAdvertising();
   Serial.println("Characteristic defined! Now you can read it in your phone!");
 
+  //test the std dev function
+  //std::vector<int> interBeatIntervals = {1000, 1040, 1030, 1025, 1045}; // Sample data: inter-beat intervals in milliseconds
+  //double rmssd = calculateRMSSD(interBeatIntervals);
+  
 }
 
 void loop()
@@ -138,7 +155,22 @@ void loop()
     {
       stableDelta = delta;
 
-      ///// calc HRV
+      if (intervalsReady)
+      {
+        hrvs[hrvSpot++] = (long)stableDelta; //Store this reading in the array
+        hrvSpot %= HRV_SIZE; //Wrap variable
+
+        ///// calc HRV
+        hrv = calculateRMSSD(hrvs);
+      }
+      else {
+        intervalsCount++;
+        if (intervalsCount >= 20)
+        {
+          intervalsReady = true;
+        }
+      }
+      
     }
     else
     {
@@ -152,7 +184,7 @@ void loop()
 
     lastBeat = millis();
 
-    beatsPerMinute = 60 / (delta / 1000.0);
+    beatsPerMinute = 60 / (stableDelta / 1000.0);
 
     if (beatsPerMinute < 255 && beatsPerMinute > 20)
     {
@@ -160,11 +192,14 @@ void loop()
       rates[rateSpot++] = (byte)beatsPerMinute; //Store this reading in the array
       rateSpot %= RATE_SIZE; //Wrap variable
 
-      //Take average of readings
+      //Get average of readings
+      /*
       beatAvg = 0;
       for (byte x = 0 ; x < RATE_SIZE ; x++)
         beatAvg += rates[x];
       beatAvg /= RATE_SIZE;
+      */
+      calculateAverage();
     }
     else
     {
@@ -183,7 +218,10 @@ void loop()
   if (ms - lastBLE > 2000)
   {
     lastBLE = ms;
-    pCharacteristic->setValue(std::to_string(beatAvg));
+    std::string result = std::string("AvgBPM: ") + std::to_string(beatAvg) + " | Delta: " + std::to_string(stableDelta) + " | HRV: " + std::to_string(hrv) + " | IC: " + std::to_string(intervalsCount)+ " | ready: " + std::to_string(intervalsReady);
+
+    pCharacteristic->setValue(result);
+    pCharacteristic->notify(); // Send notification
     counter++;
   }
 
@@ -199,4 +237,33 @@ void loop()
 
   Serial.println();
   delay(20);
+}
+
+//function to calculate the interval mean squared SD of the inter beat intervals
+double calculateRMSSD(const long IBIs[]) {
+    //if (IBIs.size() < 2) return 0.0; // Need at least two intervals to compute differences
+
+    double sumOfSquares = 0.0;
+    for (byte i = 1; i < HRV_SIZE; ++i) {
+        int diff = IBIs[i] - IBIs[i - 1];
+        sumOfSquares += pow(diff, 2);
+    }
+
+    double meanOfSquares = sumOfSquares / (HRV_SIZE - 1);
+    return sqrt(meanOfSquares);
+}
+
+//calc avg excluding highest and lowest values to help remove bad readings
+void calculateAverage() {
+
+  //Sort the array
+  std::sort(rates, rates + RATE_SIZE);
+
+  // Calculate the sum excluding the highest and lowest
+  for (byte x = 1; x < RATE_SIZE - 1; x++) { // Start from 1 and end at RATE_SIZE-1 to exclude the smallest and largest
+      beatAvg += rates[x];
+  }
+
+  beatAvg /= (RATE_SIZE - 2);
+
 }
