@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 class ActivityScreen extends StatefulWidget {
-  // You can add parameters if needed
-  const ActivityScreen({Key? key}) : super(key: key);
+  final String activity;
+  final int duration;
+
+  const ActivityScreen(this.activity, this.duration, {Key? key}) : super(key: key);
 
   @override
   _ActivityScreenState createState() => _ActivityScreenState();
@@ -20,10 +22,10 @@ class _ActivityScreenState extends State<ActivityScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         title: Text('Activity Screen'),
         backgroundColor: Colors.blueAccent,
-      ),
+      ),*/
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

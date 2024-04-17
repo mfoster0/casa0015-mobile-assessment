@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:calmer_beats/AuthService.dart'; // Ensure you have AuthService implemented
+import 'package:calmer_beats/auth_service.dart'; // Ensure you have AuthService implemented
 
 class LoginRegisterScreen extends StatefulWidget {
   @override

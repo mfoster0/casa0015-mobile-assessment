@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 
 class DurationRadioWidget extends StatefulWidget {
+  final Function(String?) onSelected; // Callback to pass the selected value
+
+  DurationRadioWidget({Key? key, required this.onSelected}) : super(key: key);
+
   @override
   _DurationRadioWidgetState createState() => _DurationRadioWidgetState();
 }
 
 class _DurationRadioWidgetState extends State<DurationRadioWidget> {
-  String? _selectedValue = '3';
+  String? _selectedValue = '2';
+
+  void _radioValueChange(String? value) {
+    setState(() {
+      _selectedValue = value;
+    });
+    widget.onSelected(value);  // Call the callback with the new value
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,33 +26,21 @@ class _DurationRadioWidgetState extends State<DurationRadioWidget> {
       children: <Widget>[
         Text('Duration (mins): '),
         Radio<String>(
-          value: '3',
+          value: '2',
           groupValue: _selectedValue,
-          onChanged: (value) {
-            setState(() {
-              _selectedValue = value;
-            });
-          },
+          onChanged: _radioValueChange,
         ),
-        Text('3'),
+        Text('2'),
         Radio<String>(
           value: '5',
           groupValue: _selectedValue,
-          onChanged: (value) {
-            setState(() {
-              _selectedValue = value;
-            });
-          },
+          onChanged: _radioValueChange,
         ),
         Text('5'),
         Radio<String>(
           value: '10',
           groupValue: _selectedValue,
-          onChanged: (value) {
-            setState(() {
-              _selectedValue = value;
-            });
-          },
+          onChanged: _radioValueChange,
         ),
         Text('10'),
       ],

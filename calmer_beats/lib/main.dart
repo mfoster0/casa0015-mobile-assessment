@@ -7,15 +7,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart'; // new
 import 'package:firebase_ui_auth/firebase_ui_auth.dart'; // new
 import 'package:go_router/go_router.dart'; // new
-import 'app_state.dart'; // new
+import 'widgets/app_state.dart'; // new
 import 'routes/home_page.dart';
-import 'routes/Activity.dart';
+import 'routes/activity.dart';
+import 'widgets/base_scaffold.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(ChangeNotifierProvider(
-    create: (context) => ApplicationState(),
+    create: (context) => ApplicationState(), // holds the globally available data
     builder: ((context, child) => const App()),
   ));
   //runApp(const App());
@@ -26,12 +27,12 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomePage(),
+      builder: (context, state) => BaseScaffold(body: HomePage(), title: 'Home'),
       routes: [
         GoRoute(
           path: 'routes/Activity',
           builder: (context, state) {
-            return ActivityScreen(); // No parameters are being passed here
+            return BaseScaffold(body: ActivityScreen("sleep", 5), title: 'Home');  // Pass activity parameters
           },
         ),
         GoRoute(
