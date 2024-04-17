@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:calmer_beats/widgets/app_state.dart';
+import 'package:provider/provider.dart';
 
 class ActivityScreen extends StatefulWidget {
-  final String activity;
+
+
+  String activity = "";
+  final String activityName;
   final int duration;
 
-  const ActivityScreen(this.activity, this.duration, {Key? key}) : super(key: key);
+  ActivityScreen({super.key, required this.activityName, required this.duration} ) ;
 
   @override
   _ActivityScreenState createState() => _ActivityScreenState();
 }
 
 class _ActivityScreenState extends State<ActivityScreen> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final activityName = widget.activityName;
+    final duration = widget.duration;
+
+    print("_ActivityScreenState.activityName: $activityName");
+    print("_ActivityScreenState.duration: $duration");
+
     return Scaffold(
       /*appBar: AppBar(
         title: Text('Activity Screen'),
@@ -31,17 +34,13 @@ class _ActivityScreenState extends State<ActivityScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+              'Activity: $activityName, Duration: $duration',
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: null ,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

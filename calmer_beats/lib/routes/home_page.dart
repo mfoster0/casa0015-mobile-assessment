@@ -22,11 +22,12 @@ class HomePage extends StatefulWidget {
 class _HomePageWidgetState extends State<HomePage> {
 
 
-  String? _selectedValue;
+  String? _selectedValue = "2";
 
   void _radioValueChange(String? value) {
     setState(() {
       _selectedValue = value;
+      //print("Set selected value: $_selectedValue");
     });
   }
 
@@ -87,7 +88,7 @@ class _HomePageWidgetState extends State<HomePage> {
             ].map<Widget>((String activity) {
               // Explicitly specifying the type of the list items as Widget
               return ElevatedButton(
-                onPressed: (){context.go('/routes/Activity');}, //activity, _activityDuration
+                onPressed: (){context.go('/activity/$activity/$_selectedValue'); print("XXXXX Selected value: $_selectedValue XXXXXX");}, //activity, _activityDuration
                 child: Text(activity),
               );
             }).toList(),

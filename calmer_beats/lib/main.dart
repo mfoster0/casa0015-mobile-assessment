@@ -30,9 +30,14 @@ final _router = GoRouter(
       builder: (context, state) => BaseScaffold(body: HomePage(), title: 'Home'),
       routes: [
         GoRoute(
-          path: 'routes/Activity',
+          //******** pay close attention to the format of the path: the ActivityScreen params
+          path: 'activity/:activityName/:duration',
           builder: (context, state) {
-            return BaseScaffold(body: ActivityScreen("sleep", 5), title: 'Home');  // Pass activity parameters
+            final activityName = state.pathParameters ['activityName'];
+            final iDuration = int.parse(state.pathParameters['duration']!);
+            print("-------------------- $activityName:$iDuration");
+            return BaseScaffold(body: ActivityScreen(activityName:activityName!, duration:iDuration!,), title: activityName);  // Pass activity parameters
+
           },
         ),
         GoRoute(
@@ -105,7 +110,7 @@ final _router = GoRouter(
 );
 // end of GoRouter configuration
 
-// Change MaterialApp to MaterialApp.router and add the routerConfig
+// Changed MaterialApp to MaterialApp.router
 class App extends StatelessWidget {
   const App({super.key});
 
