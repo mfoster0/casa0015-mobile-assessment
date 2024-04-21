@@ -46,7 +46,7 @@ class _HomePageWidgetState extends State<HomePage> {
       ),*/
       body: ListView(
         children: <Widget>[
-          Image.asset('lib/assets/mainWide.png',
+          Image.asset('lib/assets/main_wide.png',
             width: 250,
             height: 250,),
           const SizedBox(height: 8),
@@ -83,12 +83,20 @@ class _HomePageWidgetState extends State<HomePage> {
               'Focus',
               'Sound',
               'Touch',
-              "activity x",
-              "activity y",
+              "Observe",
+              "Sight",
             ].map<Widget>((String activity) {
               // Explicitly specifying the type of the list items as Widget
+
               return ElevatedButton(
-                onPressed: (){context.go('/activity/$activity/$_selectedValue'); print("XXXXX Selected value: $_selectedValue XXXXXX");}, //activity, _activityDuration
+
+                //this was is set up to be flexible so that a single aactivity screen with multiple "skins" and widgets could be used
+                //not implemented yet. the format would be:
+                //                onPressed: (){context.go('/activity/$activity/$_selectedValue');},
+                //                 child: Text(activity),
+                //
+                //instead currently the below format is /"activity_route_name"/"Title"/"duration"
+                onPressed: (){context.go('/$activity/$activity/$_selectedValue');},
                 child: Text(activity),
               );
             }).toList(),

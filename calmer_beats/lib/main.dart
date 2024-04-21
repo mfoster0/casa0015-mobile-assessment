@@ -10,6 +10,8 @@ import 'package:go_router/go_router.dart'; // new
 import 'widgets/app_state.dart'; // new
 import 'routes/home_page.dart';
 import 'routes/activity.dart';
+import 'routes/observe.dart';
+import 'routes/sight.dart';
 import 'widgets/base_scaffold.dart';
 
 void main() {
@@ -31,15 +33,26 @@ final _router = GoRouter(
       routes: [
         GoRoute(
           //******** pay close attention to the format of the path: the ActivityScreen params
-          path: 'activity/:activityName/:duration',
+          path: 'sight/:activityName/:duration',
           builder: (context, state) {
             final activityName = state.pathParameters ['activityName'];
             final iDuration = int.parse(state.pathParameters['duration']!);
-            print("-------------------- $activityName:$iDuration");
-            return BaseScaffold(body: ActivityScreen(activityName:activityName!, duration:iDuration!,), title: activityName);  // Pass activity parameters
-
+            //print("-------------------- $activityName:$iDuration");
+            return BaseScaffold(body: SightScreen(activityName:activityName!, duration:iDuration!,), title: activityName);  // Pass activity parameters
           },
         ),
+        GoRoute(
+            //******** pay close attention to the format of the path: the ActivityScreen params
+            path: 'observe/:activityName/:duration',
+            builder: (context, state) {
+              final activityName = state.pathParameters ['activityName'];
+              final iDuration = int.parse(state.pathParameters['duration']!);
+              //print("-------------------- $activityName:$iDuration");
+              return BaseScaffold(body: ObserveScreen(activityName:activityName!, duration:iDuration!,), title: activityName);  // Pass activity parameters
+
+            },
+          ),
+
         GoRoute(
           path: 'sign-in',
           builder: (context, state) {

@@ -2,21 +2,26 @@ import 'package:calmer_beats/widgets/activity_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:calmer_beats/widgets/app_state.dart';
 import 'package:provider/provider.dart';
+import 'package:calmer_beats/widgets/video_widget.dart';
 
-class ActivityScreen extends StatefulWidget {
+
+class SightScreen extends StatefulWidget {
 
 
   String activity = "";
   final String activityName;
   final int duration;
 
-  ActivityScreen({super.key, required this.activityName, required this.duration} ) ;
+  SightScreen({super.key, required this.activityName, required this.duration} ) ;
 
   @override
-  _ActivityScreenState createState() => _ActivityScreenState();
+  _SightScreenState createState() => _SightScreenState();
 }
 
-class _ActivityScreenState extends State<ActivityScreen> {
+class _SightScreenState extends State<SightScreen> {
+
+
+
   @override
   Widget build(BuildContext context) {
     final activityName = widget.activityName;
@@ -31,8 +36,9 @@ class _ActivityScreenState extends State<ActivityScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            VideoPlayerWidget(),
             Text(
-              'Activity: $activityName, Duration: $duration',
+              'Activity: $activityName, Durationqqq: $duration',
             ),
           ],
         ),
@@ -45,4 +51,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
 }
+
+
