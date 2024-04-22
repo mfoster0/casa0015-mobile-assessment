@@ -43,6 +43,11 @@ dependencies:
   firebase_ui_auth: ^1.13.1
   google_fonts: ^6.2.0
   video_player: ^2.8.6
+  just_audio: ^0.9.37
+  vibration: ^1.8.4
+  permission_handler: ^11.3.1
+  flutter_blue_plus: ^1.32.4
+
 
 dev_dependencies:
   flutter_test:

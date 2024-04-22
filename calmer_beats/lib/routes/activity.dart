@@ -38,11 +38,6 @@ class _ActivityScreenState extends State<ActivityScreen> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: null ,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

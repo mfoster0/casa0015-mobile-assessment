@@ -12,7 +12,10 @@ import 'routes/home_page.dart';
 import 'routes/activity.dart';
 import 'routes/observe.dart';
 import 'routes/sight.dart';
+import 'routes/breath.dart';
 import 'widgets/base_scaffold.dart';
+import 'widgets/ble_widget.dart';
+import 'routes/sound.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,10 +32,10 @@ final _router = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => BaseScaffold(body: HomePage(), title: 'Home'),
+      builder: (context, state) => BaseScaffold(body: HomePage(), title: 'Calmer Beats'),
       routes: [
         GoRoute(
-          //******** pay close attention to the format of the path: the ActivityScreen params
+          //  ******** pay close attention to the format of the path: the ActivityScreen params
           path: 'sight/:activityName/:duration',
           builder: (context, state) {
             final activityName = state.pathParameters ['activityName'];
@@ -42,7 +45,7 @@ final _router = GoRouter(
           },
         ),
         GoRoute(
-            //******** pay close attention to the format of the path: the ActivityScreen params
+            //  ******** pay close attention to the format of the path: the ActivityScreen params
             path: 'observe/:activityName/:duration',
             builder: (context, state) {
               final activityName = state.pathParameters ['activityName'];
@@ -52,6 +55,28 @@ final _router = GoRouter(
 
             },
           ),
+
+        GoRoute(
+          //  ******** pay close attention to the format of the path: the ActivityScreen params
+          path: 'breath/:activityName/:duration',
+          builder: (context, state) {
+            final activityName = state.pathParameters ['activityName'];
+            final iDuration = int.parse(state.pathParameters['duration']!);
+            //print("-------------------- $activityName:$iDuration");
+            return BaseScaffold(body: BreathScreen(activityName:activityName!, duration:iDuration!,), title: activityName);  // Pass activity parameters
+
+          },
+        ),
+        GoRoute(
+          //  ******** pay close attention to the format of the path: the ActivityScreen params
+          path: 'sound/:activityName/:duration',
+          builder: (context, state) {
+            final activityName = state.pathParameters ['activityName'];
+            final iDuration = int.parse(state.pathParameters['duration']!);
+            //print("-------------------- $activityName:$iDuration");
+            return BaseScaffold(body: SoundScreen(activityName:activityName!, duration:iDuration!,), title: activityName);  // Pass activity parameters
+          },
+        ),
 
         GoRoute(
           path: 'sign-in',
@@ -107,6 +132,7 @@ final _router = GoRouter(
         GoRoute(
           path: 'profile',
           builder: (context, state) {
+            //firebase ui
             return ProfileScreen(
               providers: const [],
               actions: [
@@ -130,6 +156,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
       title: 'Calmer Beats',
       theme: ThemeData(
         buttonTheme: Theme.of(context).buttonTheme.copyWith(
@@ -148,34 +175,3 @@ class App extends StatelessWidget {
 }
 
 
-/*
-
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:calmer_beats/firebase_options.dart';
-import 'package:calmer_beats/routes/LoginRegisterScreen.dart';
-
-Future<void> main() async{
-  WidgetsFlutterBinding.ensureInitialized();
-
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Your App',
-      home: LoginRegisterScreen(),
-      routes: {
-        '/home': (context) => LoginRegisterScreen(),
-        // Define other routes
-      },
-    );
-  }
-}
-*/

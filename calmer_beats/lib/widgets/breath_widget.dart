@@ -4,27 +4,14 @@
 // https://www.sandromaglione.com/articles/how-to-use-tween-learn-all-about-flutter-animations-part-2
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:vibration/vibration.dart';
 
-void main() => runApp(calmerBeats());
 
-class calmerBeats extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Structured Breathing'),
-          centerTitle: true,
-        ),
-        body: BreathBall(),
-      ),
-    );
-  }
-}
 
 class BreathBall extends StatefulWidget {
+  final int duration;
+
+  BreathBall({super.key, required this.duration} ) ;
   @override
   _BreathBallState createState() => _BreathBallState();
 }
@@ -34,11 +21,13 @@ class _BreathBallState extends State<BreathBall>
   late AnimationController _controller;
   late Animation<double> _animation;
   String _text = '...'; // Initial text
+  String _buttonText = 'Start';
+  late int exerciseDuration;
 
   @override
   void initState() {
     super.initState();
-
+    exerciseDuration = widget.duration;
     //config for timings and sizes
     int totalTime = 13; //total time in secs
     Map<String, double> phases = {
@@ -131,7 +120,7 @@ class _BreathBallState extends State<BreathBall>
   }
 
   void vibeNow (){
-        Vibration.vibrate(duration: 500);
+    Vibration.vibrate(duration: 500);
   }
   void startAnimation() {
     if (_controller.isAnimating) {
@@ -142,7 +131,7 @@ class _BreathBallState extends State<BreathBall>
 
     //use the value passed from the previous route
     // stop the animation after n seconds
-    Future.delayed(Duration(minutes: 1), () {
+    Future.delayed(Duration(minutes: exerciseDuration), () {
       if (_controller.isAnimating) {
         _controller.stop();
       }
@@ -165,15 +154,23 @@ class _BreathBallState extends State<BreathBall>
           left: 0,
           right: 0,
           child: ElevatedButton(
-            onPressed: startAnimation,
-            child: const Text('Start',
+            onPressed: () {
+              startAnimation();
+              setState(() {
+                _buttonText = _buttonText == "Start" ? "Stop" : "Start";
+              });
+              Future.delayed(Duration(minutes: exerciseDuration), () {
+                Navigator.pop(context);
+              });
+            },
+            child: Text(_buttonText,
                 style: TextStyle(
                   fontSize: 24,
                 )),
           ),
         ),
         Align(
-          alignment: Alignment(0, -0.5),
+          alignment: Alignment(0, -0.65),
           child: Text(
             _text,
             style: TextStyle(
@@ -182,7 +179,7 @@ class _BreathBallState extends State<BreathBall>
           ),
         ),
         Positioned(
-          top: MediaQuery.of(context).size.height * 0.40 -
+          top: MediaQuery.of(context).size.height * 0.30 -
               (_animation.value / 2),
           left: MediaQuery.of(context).size.width / 2 - (_animation.value / 2),
           child: Container(

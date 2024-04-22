@@ -13,6 +13,8 @@ import '../widgets/app_state.dart'; // new
 import '../authentication.dart'; // new
 import '../widgets.dart';
 import '../widgets/durationRadios.dart';
+import '../widgets/ble_widget.dart';
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -20,9 +22,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageWidgetState extends State<HomePage> {
-
+  bool _isLoggedIn = false;
+  bool _isConnected = false;
+  String _receivedData = "";
+  String _bpmData = "";
+  String _hrvData = "";
 
   String? _selectedValue = "2";
+
 
   void _radioValueChange(String? value) {
     setState(() {
@@ -30,7 +37,46 @@ class _HomePageWidgetState extends State<HomePage> {
       //print("Set selected value: $_selectedValue");
     });
   }
+  void navigateToBLEConnect() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BLEConnect(
+          title: "Create Connection",
+          onConnectionStatusChanged: onConnectionStatusChanged,
+          onDataReceived: onDataReceived,
+        ),
+      ),
+    );
+  }
 
+  //event handlers:
+  // for connection
+  void onConnectionStatusChanged(bool isConnected) {
+    // Handle connection status change
+    print("Connection Status: $isConnected");
+    _isConnected = isConnected;
+  }
+  //for remote data
+  void onDataReceived(String data) {
+    // Handle data received
+    print("Data Received: $data");
+    _receivedData = data;
+
+    // Split the string - format is "AvgBPM: VALUE1 | Delta: SOMENUMBER | HRV: VALUE2 | SOMEMORETEXT"
+    List<String> parts = data.split(' | ');
+
+    // get Avgbpm
+    String value1All = parts[0];
+    _bpmData = value1All.split(': ')[1];
+
+    // get HRV
+    String value2All = parts[2];
+    _hrvData = value2All.split(': ')[1];
+
+    print("BPM: $_bpmData");
+    print("HRV: $_hrvData");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,21 +85,38 @@ class _HomePageWidgetState extends State<HomePage> {
       /*appBar: AppBar( backgroundColor: Colors.teal, foregroundColor: Colors.white,
         title: const Text('Calmer Beats'),
         actions: [
-          IconButton(onPressed:(){context.go('/routes/Activity');},icon: Icon(Icons.tap_and_play), color: Colors.lightGreenAccent,), //use lightGreenAccent and pink for good contrast
-          IconButton(onPressed:(){},icon: Icon(Icons.login), color: Colors.pink,),
-          IconButton(onPressed:(){},icon: Icon(Icons.info_outline_rounded)),
-          ],
-      ),*/
+          //IconButton(onPressed:(){context.go('/routes/');},icon: Icon(Icons.tap_and_play), color: Colors.lightGreenAccent,), //use lightGreenAccent and pink for good contrast
+          IconButton(onPressed:(){navigateToBLEConnect();},icon: Icon(Icons.tap_and_play), color: Colors.pink,),
+          AuthFunc(
+            loggedIn: _isLoggedIn,
+            signOut: () {
+              // Implement the signOut functionality
+              FirebaseAuth.instance.signOut();
+              _isLoggedIn = false;
+            },
+          ),
+
+          //route to the sign-in page
+          IconButton(
+            icon: Icon(Icons.login),
+            onPressed: () {
+              context.go('/sign-in');
+            },
+          ),
+        ],
+      ),
+
+       */
+
       body: ListView(
         children: <Widget>[
           Image.asset('lib/assets/main_wide.png',
             width: 250,
             height: 250,),
           const SizedBox(height: 8),
-          //const IconAndDetail(Icons.tap_and_play, 'Connect'),
-          //const IconAndDetail(Icons.settings, 'Settings'),
-
+          //login button
           //Login function
+          /*
           Consumer<ApplicationState>(
             builder: (context, appState, _) => AuthFunc(
                 loggedIn: appState.loggedIn,
@@ -61,7 +124,7 @@ class _HomePageWidgetState extends State<HomePage> {
                   FirebaseAuth.instance.signOut();
                 }),
           ),
-          // to here
+          */
           const Divider(
             height: 8,
             thickness: 1,
@@ -69,28 +132,33 @@ class _HomePageWidgetState extends State<HomePage> {
             endIndent: 8,
             color: Colors.grey,
           ),
-          const Header("Welcome to Calmer Beats"),
-          const Paragraph(
+          const Center(
+            child:Header("Welcome to Calmer Beats" ),
+          ),
+          const Center(
+            child:Paragraph(
             "Let's take things down a notch\nSelect your duration and activity",
+            ),
           ),
           DurationRadioWidget(onSelected: _radioValueChange),
 
           //display the activity buttons
           Wrap(
+            alignment: WrapAlignment.center,
             spacing: 8.0,
             children: <String>[
-              'Breathing',
-              'Focus',
+              'Breath',
+              //'Focus',
               'Sound',
-              'Touch',
-              "Observe",
+              //'Touch',
+              //"Observe",
               "Sight",
             ].map<Widget>((String activity) {
               // Explicitly specifying the type of the list items as Widget
 
               return ElevatedButton(
 
-                //this was is set up to be flexible so that a single aactivity screen with multiple "skins" and widgets could be used
+                //this was is set up to be flexible so that a single activity screen with multiple "skins" and widgets could be used
                 //not implemented yet. the format would be:
                 //                onPressed: (){context.go('/activity/$activity/$_selectedValue');},
                 //                 child: Text(activity),
@@ -101,6 +169,28 @@ class _HomePageWidgetState extends State<HomePage> {
               );
             }).toList(),
           ),
+
+          Divider(
+            thickness: 3,
+            indent: 10,
+            endIndent: 10,
+          ),const SizedBox(height: 8),
+
+          Center(
+            child: Header("BMP and HRV Data"),
+          ),
+          const SizedBox(height: 8),
+          const Divider(
+            height: 8,
+            thickness: 1,
+            indent: 8,
+            endIndent: 8,
+            color: Colors.grey,
+          ),
+
+          ////////////////// SPACE FOR DISPLAYING READINGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
         ],
 
       ),

@@ -5,20 +5,20 @@ import 'package:provider/provider.dart';
 import 'package:calmer_beats/widgets/video_widget.dart';
 
 
-class SightScreen extends StatefulWidget {
+class SoundScreen extends StatefulWidget {
 
 
   String activity = "";
   final String activityName;
   final int duration;
 
-  SightScreen({super.key, required this.activityName, required this.duration} ) ;
+  SoundScreen({super.key, required this.activityName, required this.duration} ) ;
 
   @override
-  _SightScreenState createState() => _SightScreenState();
+  _SoundScreenState createState() => _SoundScreenState();
 }
 
-class _SightScreenState extends State<SightScreen> {
+class _SoundScreenState extends State<SoundScreen> {
 
 
 
@@ -31,7 +31,7 @@ class _SightScreenState extends State<SightScreen> {
       body:
         ListView(
             children: <Widget>[
-          Image.asset('lib/assets/view_wide2.png',
+          Image.asset('lib/assets/sound_wide2.png',
             width: 350,
             height: 285,),
           const Divider(
@@ -42,7 +42,7 @@ class _SightScreenState extends State<SightScreen> {
             color: Colors.grey,
           ),
            Center(
-            child:Text("For this exercise, cloud watch. Press play, clear your mind and gaze at the wonderful shapes",
+            child:Text("Press play, close your eyes and immerse yourself in the sounds of the forest",
               textAlign: TextAlign.center,
               style: TextStyle(
               fontSize: 24.0, // Set the font size here
@@ -57,10 +57,10 @@ class _SightScreenState extends State<SightScreen> {
                 Container(
                   width: 400, // Specify your desired width
                   height: 260,
-                  child: VideoPlayerWidget(clip: 'lib/assets/clouds_comp.mp4', duration: duration),
+                  child: VideoPlayerWidget(clip: 'lib/assets/woodland.mp4', duration: duration,),
                 ),
                 Text(
-                  'Activity: Cloud Gazing, Duration: $duration minutes',
+                  'Activity: Focused listening. Duration: $duration minutes',
                 ),
               ],
             ),

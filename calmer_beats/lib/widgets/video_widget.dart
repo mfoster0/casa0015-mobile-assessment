@@ -6,17 +6,20 @@ import 'package:video_player/video_player.dart';
 
 
 class VideoPlayerWidget extends StatelessWidget {
-  const VideoPlayerWidget({super.key});
+  final String clip;
+  final int duration;
 
+  const VideoPlayerWidget({super.key, required this.clip, required this.duration} ) ;
   @override
   Widget build(BuildContext context) {
-    return VideoPlayerScreen();
+    return VideoPlayerScreen(clip: clip,duration: duration,);
   }
 }
 
 class VideoPlayerScreen extends StatefulWidget {
-  const VideoPlayerScreen({super.key});
-
+  final String clip;
+  final int duration;
+  const VideoPlayerScreen({super.key, required this.clip, required this.duration} ) ;
   @override
   State<VideoPlayerScreen> createState() => _VideoPlayerScreenState();
 }
@@ -38,8 +41,15 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
       ),
     );
     */
-    _controller = VideoPlayerController.asset('assets/THEVIDEO.mp4');
-
+    /*
+      _controller = VideoPlayerController.asset('assets/videos/my_video.mp4')
+        ..initialize().then((_) {
+          // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+          setState(() {});
+        });
+*/
+    //_controller = VideoPlayerController.asset('lib/assets/clouds_comp.mp4');
+    _controller = VideoPlayerController.asset(widget.clip);
     // Initialize the controller and store the Future for later use.
     _initializeVideoPlayerFuture = _controller.initialize();
 
@@ -53,6 +63,23 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
     _controller.dispose();
 
     super.dispose();
+  }
+
+  void _goFullScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => Scaffold(
+          body: Container(
+            alignment: Alignment.center,
+            color: Colors.black,
+            child: AspectRatio(
+              aspectRatio: _controller.value.aspectRatio,
+              child: VideoPlayer(_controller),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -76,12 +103,19 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
                     ? SizedBox.shrink() // If playing, do not show the play button.
                     : FloatingActionButton(
                   onPressed: () {
+                    Future.delayed(Duration(minutes: widget.duration), () {
+                      //pop x2 because fullscreen creates a new route
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    });
                     setState(() {
                       //start playback
                       if (!_controller.value.isPlaying) {
                         _controller.play();
                       }
                     });
+                    //take the user to a full screen mode to cut out distractions
+                    _goFullScreen();
                   },
                   child: Icon(Icons.play_arrow),
                 ),
@@ -97,24 +131,6 @@ class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
           }
         },
       ),
-      /*floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Wrap the play or pause in a call to `setState`. This ensures the
-          // correct icon is shown.
-          setState(() {
-            // If the video is playing, pause it.
-            if (_controller.value.isPlaying) {
-              _controller.pause();
-            } else {
-              // If the video is paused, play it.
-              _controller.play();
-            }
-          });
-        },
-        // Display the correct icon depending on the state of the player.
-        child: Icon(
-          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        ),*/
 
     );
   }

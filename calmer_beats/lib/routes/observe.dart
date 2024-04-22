@@ -24,10 +24,7 @@ class _ObserveScreenState extends State<ObserveScreen> {
 
 
     return Scaffold(
-      /*appBar: AppBar(
-        title: Text('Activity Screen'),
-        backgroundColor: Colors.blueAccent,
-      ),*/
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -39,11 +36,6 @@ class _ObserveScreenState extends State<ObserveScreen> {
         ),
       ),
 
-      floatingActionButton: FloatingActionButton(
-        onPressed: null ,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
