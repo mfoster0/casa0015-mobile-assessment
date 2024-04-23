@@ -41,8 +41,8 @@ The app has 3 main activities for the user. A breathing exercise, an observation
 
 The below libraries were used and added through the CLI to avoid issues.
 
-  firebase_core: ^2.29.0
-  go_router: ^13.2.4
+  * firebase_core: ^2.29.0
+  * go_router: ^13.2.4
   firebase_auth: ^4.19.1
   cloud_firestore: ^4.16.1
   provider: ^6.1.2
@@ -56,12 +56,9 @@ The below libraries were used and added through the CLI to avoid issues.
   shared_preferences: ^2.2.3
 
 
-## Getting Started
-
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
-
-
-
+T### Getting Started
+The app establishes connects to the device and streams the data. Once you've established this connection, the data should be writted to the home screen.
+After this there are 3 excercises that the user can perform for a specified duration. Switch these our with your own, add to the screens. A more dynamic data driven UI would make this easier.
 
 ### Prerequisites
 
@@ -76,7 +73,9 @@ To see and connect to BLE devices, include Bluetooth permissions below in the An
 
 ### Things to complete
 
+The BLE connection failed on my latest build, so this needs working through.
 
+Making use of the FireStore for user prefs and some content would be benficial.
 
 
 ## Installation Instructions
