@@ -43,20 +43,20 @@ The below libraries were used and added through the CLI to avoid issues.
 
   * firebase_core: ^2.29.0
   * go_router: ^13.2.4
-  firebase_auth: ^4.19.1
-  cloud_firestore: ^4.16.1
-  provider: ^6.1.2
-  firebase_ui_auth: ^1.13.1
-  google_fonts: ^6.2.0
-  video_player: ^2.8.6
-  just_audio: ^0.9.37
-  vibration: ^1.8.4
-  permission_handler: ^11.3.1
-  flutter_blue_plus: ^1.32.4
-  shared_preferences: ^2.2.3
+  * firebase_auth: ^4.19.1
+  * cloud_firestore: ^4.16.1
+  * provider: ^6.1.2
+  * firebase_ui_auth: ^1.13.1
+  * google_fonts: ^6.2.0
+  * video_player: ^2.8.6
+  * just_audio: ^0.9.37
+  * vibration: ^1.8.4
+  * permission_handler: ^11.3.1
+  * flutter_blue_plus: ^1.32.4
+  * shared_preferences: ^2.2.3
 
 
-T### Getting Started
+### Getting Started
 The app establishes connects to the device and streams the data. Once you've established this connection, the data should be writted to the home screen.
 After this there are 3 excercises that the user can perform for a specified duration. Switch these our with your own, add to the screens. A more dynamic data driven UI would make this easier.
 
@@ -65,11 +65,11 @@ After this there are 3 excercises that the user can perform for a specified dura
 Make sure your smart phone is in developer mode.
 
 To see and connect to BLE devices, include Bluetooth permissions below in the AndroidManifest.xml file ({app}/android/app/src/main/AndroidManifest.xml)
-    <uses-permission android:name="android.permission.BLUETOOTH" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
+   *  <uses-permission android:name="android.permission.BLUETOOTH" />
+   *  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+   *  <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+   *  <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+   *  <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
 
 ### Things to complete
 
