@@ -6,12 +6,12 @@ class BaseScaffold extends StatelessWidget {
   final Widget body;
   final String title;
 
-  const BaseScaffold({Key? key, required this.body, required this.title}) : super(key: key);
+  const BaseScaffold({super.key, required this.body, required this.title});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*appBar: AppBar(
         backgroundColor: Colors.teal,
         foregroundColor: Colors.white,
         title: Text(title),
@@ -34,6 +34,8 @@ class BaseScaffold extends StatelessWidget {
           ),
         ],
       ),
+
+       */
       body: body,
     );
   }

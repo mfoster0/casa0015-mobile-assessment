@@ -16,6 +16,7 @@ import 'routes/breath.dart';
 import 'widgets/base_scaffold.dart';
 import 'widgets/ble_widget.dart';
 import 'routes/sound.dart';
+import 'routes/info_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +25,7 @@ void main() {
     create: (context) => ApplicationState(), // holds the globally available data
     builder: ((context, child) => const App()),
   ));
-  //runApp(const App());
+
 }
 
 // Add GoRouter configuration outside the App class
@@ -77,7 +78,13 @@ final _router = GoRouter(
             return BaseScaffold(body: SoundScreen(activityName:activityName!, duration:iDuration!,), title: activityName);  // Pass activity parameters
           },
         ),
-
+        GoRoute(
+          //  ******** pay close attention to the format of the path: the ActivityScreen params
+          path: 'info_screen',
+          builder: (context, state) {
+            return BaseScaffold(body: IntroScreen(),title: "Calmer Beats");
+          },
+        ),
         GoRoute(
           path: 'sign-in',
           builder: (context, state) {

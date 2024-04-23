@@ -14,7 +14,8 @@ import '../authentication.dart'; // new
 import '../widgets.dart';
 import '../widgets/durationRadios.dart';
 import '../widgets/ble_widget.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:calmer_beats/routes/info_screen.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -29,7 +30,28 @@ class _HomePageWidgetState extends State<HomePage> {
   String _hrvData = "";
 
   String? _selectedValue = "2";
+  bool _isFirstLaunch = true;
 
+  @override
+  void initState() {
+    super.initState();
+    _checkFirstLaunch();
+  }
+  //launch info screen when opening app
+  Future<void> _checkFirstLaunch() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isFirstLaunch = prefs.getBool('first_launch') ?? true;
+
+    if (isFirstLaunch) {
+      await prefs.setBool('first_launch', false);
+      _isFirstLaunch = true;
+    } else {
+      _isFirstLaunch = false;
+    }
+
+    // Refresh the UI after checking
+    setState(() {});
+  }
 
   void _radioValueChange(String? value) {
     setState(() {
@@ -46,6 +68,29 @@ class _HomePageWidgetState extends State<HomePage> {
           onConnectionStatusChanged: onConnectionStatusChanged,
           onDataReceived: onDataReceived,
         ),
+      ),
+    );
+  }
+
+  void showInfo() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) =>
+            Scaffold(
+              body: Container(
+                alignment: Alignment.center,
+                color: Colors.black,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text("Close",
+                      style: TextStyle(
+                        fontSize: 24,
+                      )),
+                ),
+              ),
+            ),
       ),
     );
   }
@@ -80,13 +125,17 @@ class _HomePageWidgetState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final settings = Provider.of<ApplicationState>(context); //get globals
-    return Scaffold(
-      /*appBar: AppBar( backgroundColor: Colors.teal, foregroundColor: Colors.white,
+    final settings = Provider.of<ApplicationState>(context);
+
+    return _isFirstLaunch ? IntroScreen() :Scaffold(
+      appBar: AppBar( backgroundColor: Colors.teal, foregroundColor: Colors.white,
         title: const Text('Calmer Beats'),
         actions: [
           //IconButton(onPressed:(){context.go('/routes/');},icon: Icon(Icons.tap_and_play), color: Colors.lightGreenAccent,), //use lightGreenAccent and pink for good contrast
-          IconButton(onPressed:(){navigateToBLEConnect();},icon: Icon(Icons.tap_and_play), color: Colors.pink,),
+          IconButton(
+            onPressed:(){navigateToBLEConnect();},
+            icon: Icon(Icons.tap_and_play),
+            color: Colors.pink,),
           AuthFunc(
             loggedIn: _isLoggedIn,
             signOut: () {
@@ -95,18 +144,24 @@ class _HomePageWidgetState extends State<HomePage> {
               _isLoggedIn = false;
             },
           ),
-
+          /*
           //route to the sign-in page
           IconButton(
             icon: Icon(Icons.login),
             onPressed: () {
               context.go('/sign-in');
             },
+            color: Colors.pink,
+          ),
+          */
+          IconButton(
+            onPressed: () {context.go('/info_screen');}, // Implement navigation or functionality
+            icon: Icon(Icons.info_outline_rounded),
           ),
         ],
       ),
 
-       */
+
 
       body: ListView(
         children: <Widget>[
@@ -189,7 +244,30 @@ class _HomePageWidgetState extends State<HomePage> {
           ),
 
           ////////////////// SPACE FOR DISPLAYING READINGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
+          SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              // 2 Columns - before and after
+              Column(
+                children: <Widget>[
+                  Text('Before', style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8),
+                  Text('BPM: '),
+                  Text('HRV: '),
+                ],
+              ),
 
+              Column(
+                children: <Widget>[
+                  Text('After', style: TextStyle(fontWeight: FontWeight.bold)),
+                  SizedBox(height: 8),
+                  Text('BPM: '),
+                  Text('HRV: '),
+                ],
+              ),
+            ],
+          ),
 
         ],
 

@@ -28,6 +28,8 @@ class _SightScreenState extends State<SightScreen> {
     final duration = widget.duration;
 
     return Scaffold(
+      appBar: AppBar( backgroundColor: Colors.teal, foregroundColor: Colors.white,
+        title: const Text('Calmer Beats'),),
       body:
         ListView(
             children: <Widget>[
@@ -57,7 +59,8 @@ class _SightScreenState extends State<SightScreen> {
                 Container(
                   width: 400, // Specify your desired width
                   height: 260,
-                  child: VideoPlayerWidget(clip: 'lib/assets/clouds_comp.mp4', duration: duration),
+                  //using short copressed version. full video not uploadabe to github
+                  child: VideoPlayerWidget(clip: 'lib/assets/clouds_short_comp.mp4', duration: duration),
                 ),
                 Text(
                   'Activity: Cloud Gazing, Duration: $duration minutes',

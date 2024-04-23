@@ -27,10 +27,8 @@ class _BreathScreenState extends State<BreathScreen> {
     final duration = widget.duration;
 
     return Scaffold(
-      /*appBar: AppBar(
-        title: Text('Activity Screen'),
-        backgroundColor: Colors.blueAccent,
-      ),*/
+      appBar: AppBar( backgroundColor: Colors.teal, foregroundColor: Colors.white,
+        title: const Text('Calmer Beats'),),
       body:
       ListView(
       children: <Widget>[
