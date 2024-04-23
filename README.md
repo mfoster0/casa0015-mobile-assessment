@@ -12,10 +12,8 @@ The project aimed to create a Flutter app that can help with the symptoms of anx
 
 ## The Concept
 
-Provide an overview of the project concept here. Explain the main idea and the problem it aims to solve.
-
-
-
+The app connects to a BLE enabled pulse monitor. It captures the initial pulse rate and HRV (Heart Rate Interval). 
+The user performed a guided mindfullness exercise and they are able to see whether it has been benefical in improving their HRV.
 
 
 ## Pulse Monitor
@@ -28,13 +26,11 @@ BLE Connection Test Video
 https://1drv.ms/v/s!ArII0mnkCPeRmJY5tpJGuC-gyJd9ZQ
 
 
-![Pulse Monitor Image](path_to_pulse_monitor_image.jpg "The Pulse Monitor")
+![Pulse Monitor Image](assets/ESP32_1.jpg "The Pulse Monitor")
+![Pulse Monitor Image](assets/ESP32_2.jpg "The Pulse Monitor")
 
 ## The App
 
-
-
-### Overview
 
 The app has 3 main activities for the user. A breathing exercise, an observation focus exercise (cloud watching) and a sound focus exersize with woodland sounds.
 
