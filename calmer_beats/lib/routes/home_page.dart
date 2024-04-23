@@ -136,7 +136,7 @@ class _HomePageWidgetState extends State<HomePage> {
             onPressed:(){navigateToBLEConnect();},
             icon: const Icon(Icons.tap_and_play),
             color: Colors.pink,),
-          AuthFunc(
+          /*AuthFunc(
             loggedIn: _isLoggedIn,
             signOut: () {
               // Implement the signOut functionality
@@ -144,7 +144,7 @@ class _HomePageWidgetState extends State<HomePage> {
               _isLoggedIn = false;
             },
           ),
-          /*
+           */
           //route to the sign-in page
           IconButton(
             icon: Icon(Icons.login),
@@ -153,7 +153,7 @@ class _HomePageWidgetState extends State<HomePage> {
             },
             color: Colors.pink,
           ),
-          */
+
           IconButton(
             onPressed: () {context.go('/info_screen');}, // Implement navigation or functionality
             icon: Icon(Icons.info_outline_rounded),
