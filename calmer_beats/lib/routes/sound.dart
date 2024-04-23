@@ -43,7 +43,7 @@ class _SoundScreenState extends State<SoundScreen> {
             endIndent: 8,
             color: Colors.grey,
           ),
-           Center(
+          const Center(
             child:Text("Press play, close your eyes and immerse yourself in the sounds of the forest",
               textAlign: TextAlign.center,
               style: TextStyle(

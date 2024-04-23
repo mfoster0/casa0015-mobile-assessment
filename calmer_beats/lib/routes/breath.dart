@@ -46,7 +46,7 @@ class _BreathScreenState extends State<BreathScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
+            const Text(
               'Breathe in on the short vibration and out on the long',
                 textAlign: TextAlign.center,
                 style: TextStyle(

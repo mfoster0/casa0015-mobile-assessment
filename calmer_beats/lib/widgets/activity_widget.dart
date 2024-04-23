@@ -21,8 +21,8 @@ class _ActivityWidgetState extends State<ActivityWidget> {
     final activityName = widget.activityName;
     final duration = widget.duration;
 
-    print("_ActivityScreenState.activityName: $activityName");
-    print("_ActivityScreenState.duration: $duration");
+    //print("_ActivityScreenState.activityName: $activityName");
+    //print("_ActivityScreenState.duration: $duration");
 
     return Scaffold(
       body: Center(

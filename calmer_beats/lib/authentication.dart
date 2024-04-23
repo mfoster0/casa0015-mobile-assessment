@@ -32,7 +32,7 @@ class AuthFunc extends StatelessWidget {
         Visibility(
           visible: loggedIn,
           child: IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
               //firebase profile
               Navigator.pushNamed(context, '/profile');
@@ -45,44 +45,3 @@ class AuthFunc extends StatelessWidget {
   }
 }
 
-/*
-BELOW IS THE ORIGINAL LOGIN BUTTON IMPLEMENTATION
-
-class AuthFunc extends StatelessWidget {
-  const AuthFunc({
-    super.key,
-    required this.loggedIn,
-    required this.signOut,
-  });
-
-  final bool loggedIn;
-  final void Function() signOut;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 24, bottom: 8),
-          child: StyledButton(
-              onPressed: () {
-                !loggedIn ? context.push('/sign-in') : signOut();
-              },
-              child: !loggedIn ? const Text('Login') : const Text('Logout')),
-        ),
-        Visibility(
-          visible: loggedIn,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 24, bottom: 8),
-            child: StyledButton(
-                onPressed: () {
-                  context.push('/profile');
-                },
-                child: const Text('Profile')),
-          ),
-        )
-      ],
-    );
-  }
-}
- */

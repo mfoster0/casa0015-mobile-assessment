@@ -43,7 +43,7 @@ class _SightScreenState extends State<SightScreen> {
             endIndent: 8,
             color: Colors.grey,
           ),
-           Center(
+          const Center(
             child:Text("For this exercise, cloud watch. Press play, clear your mind and gaze at the wonderful shapes",
               textAlign: TextAlign.center,
               style: TextStyle(

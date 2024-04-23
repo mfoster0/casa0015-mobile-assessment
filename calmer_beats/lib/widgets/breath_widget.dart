@@ -11,7 +11,7 @@ import 'package:vibration/vibration.dart';
 class BreathBall extends StatefulWidget {
   final int duration;
 
-  BreathBall({super.key, required this.duration} ) ;
+  const BreathBall({super.key, required this.duration} ) ;
   @override
   _BreathBallState createState() => _BreathBallState();
 }
@@ -196,11 +196,11 @@ class _BreathBallState extends State<BreathBall>
                   Colors.orange
                       .shade900, // Darker color on the opposite side to simulate shadow
                 ],
-                stops: [
+                stops: const [
                   0.3,
                   1.0
                 ], // Adjust these stops to control the gradient effect
-                focal: Alignment(-0.2,
+                focal: const Alignment(-0.2,
                     -0.2), // Shift the focal point to enhance the 3D effect
                 focalRadius: 0.5,
               ),

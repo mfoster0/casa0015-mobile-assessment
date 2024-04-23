@@ -1,6 +1,6 @@
 //Adapted from https://blog.kuzzle.io/communicate-through-ble-using-flutter
 
-import 'dart:convert';
+//import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,11 +20,11 @@ Future<void> requestPermissions() async {
 
 class BLEConnect extends StatefulWidget {
   BLEConnect({
-    Key? key,
+    super.key,
     required this.title,
     required this.onConnectionStatusChanged,
     required this.onDataReceived
-  }) : super(key: key);
+  });
 
   final String title;
   final List<BluetoothDevice> devicesList = <BluetoothDevice>[];
@@ -141,7 +141,7 @@ class BLEConnectState extends State<BLEConnect> {
     List<Widget> containers = <Widget>[];
     for (BluetoothDevice device in widget.devicesList) {
       //only display devices that are CalmerBeats Heart Beat Monitors, i.e. advertise "BeatsMon".
-      if (device.advName != "BeatsMonx") {
+      if (device.advName == "BeatsMon") {
         print(device.advName);
         containers.add(
           SizedBox(

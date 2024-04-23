@@ -84,8 +84,8 @@ class _HomePageWidgetState extends State<HomePage> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text("Close",
-                      style: TextStyle(
+                  child: const Text("Close",
+                    style: TextStyle(
                         fontSize: 24,
                       )),
                 ),
@@ -127,14 +127,14 @@ class _HomePageWidgetState extends State<HomePage> {
   Widget build(BuildContext context) {
     final settings = Provider.of<ApplicationState>(context);
 
-    return _isFirstLaunch ? IntroScreen() :Scaffold(
+    return _isFirstLaunch ? const IntroScreen() :Scaffold(
       appBar: AppBar( backgroundColor: Colors.teal, foregroundColor: Colors.white,
         title: const Text('Calmer Beats'),
         actions: [
           //IconButton(onPressed:(){context.go('/routes/');},icon: Icon(Icons.tap_and_play), color: Colors.lightGreenAccent,), //use lightGreenAccent and pink for good contrast
           IconButton(
             onPressed:(){navigateToBLEConnect();},
-            icon: Icon(Icons.tap_and_play),
+            icon: const Icon(Icons.tap_and_play),
             color: Colors.pink,),
           AuthFunc(
             loggedIn: _isLoggedIn,
@@ -225,13 +225,13 @@ class _HomePageWidgetState extends State<HomePage> {
             }).toList(),
           ),
 
-          Divider(
+          const Divider(
             thickness: 3,
             indent: 10,
             endIndent: 10,
           ),const SizedBox(height: 8),
 
-          Center(
+          const Center(
             child: Header("BMP and HRV Data"),
           ),
           const SizedBox(height: 8),
@@ -244,8 +244,8 @@ class _HomePageWidgetState extends State<HomePage> {
           ),
 
           ////////////////// SPACE FOR DISPLAYING READINGS !!!!!!!!!!!!!!!!!!!!!!!!!!!
-          SizedBox(height: 8),
-          Row(
+          const SizedBox(height: 8),
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               // 2 Columns - before and after
